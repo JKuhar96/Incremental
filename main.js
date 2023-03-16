@@ -1,8 +1,8 @@
 var gameData = {
-  copper: 0,
+  copper: 1,
   copperPerClick: 1,
   copperPerClickCost: 10,
-  firstCopperMiner: 1000
+  firstCopperMiner: 100
 }
 
 //#region Functions for the first tab
@@ -14,8 +14,10 @@ function mineCopper() {
     document.getElementById("copperPerClickUpgrade").removeAttribute("hidden")
     document.getElementById("copperPerClickUpgrade").removeAttribute("disabled")
   }
-  if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost) {
-    document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
+
+  if (gameData.copper >= gameData.firstCopperMiner) {
+    document.getElementById("firstCopperMiner").removeAttribute("hidden")
+    document.getElementById("firstCopperMiner").removeAttribute("disabled")
   }
 }
 
@@ -26,6 +28,7 @@ function buyCopperPerClick() {
     gameData.copperPerClick += 1
     gameData.copperPerClickCost *= 2
     document.getElementById("copperMined").innerHTML = gameData.copper + " Copper Mined"
+    document.getElementById("copperPerClickUpgrade").setAttribute("disabled", true)
   }
 }
 
@@ -35,17 +38,10 @@ function unlockFirstCopperMiner() {
     gameData.copper -= gameData.firstCopperMiner
     gameData.firstCopperMiner *= 2
     window.setInterval(function () { gameData.copper += 100 }, 10000)
+    document.getElementById("firstCopperMiner").setAttribute("disabled", true)
   }
 }
 //#endregion
-
-if (gameData.copper >= gameData.firstCopperMiner && gameData.firstCopperMiner == 1000) {
-  document.getElementById("firstCopperMiner").removeAttribute("hidden")
-}
-
-if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost) {
-  document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
-}
 
 // Save the game every 15 seconds
 var saveGameLoop = window.setInterval(function () {
