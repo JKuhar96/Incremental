@@ -60,8 +60,3 @@ if (savegame !== null) {
 
   gameData = savegame
 }
-
-// Loop that can be used for automation
-var mainGameLoop = window.setInterval(function () {
-
-}, 1000)
