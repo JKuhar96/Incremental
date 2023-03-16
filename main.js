@@ -14,8 +14,7 @@ function mineCopper() {
     document.getElementById("copperPerClickUpgrade").removeAttribute("hidden")
     document.getElementById("copperPerClickUpgrade").removeAttribute("disabled")
   }
-  if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost)
-  {
+  if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost) {
     document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
   }
 }
@@ -35,14 +34,17 @@ function unlockFirstCopperMiner() {
   if (gameData.copper >= gameData.firstCopperMiner) {
     gameData.copper -= gameData.firstCopperMiner
     gameData.firstCopperMiner *= 2
-    window.setInterval(function (){gameData.copper += 100}, 10000)
+    window.setInterval(function () { gameData.copper += 100 }, 10000)
   }
 }
 //#endregion
 
-if (gameData.copper >= gameData.firstCopperMiner && gameData.firstCopperMiner == 1000)
-{
+if (gameData.copper >= gameData.firstCopperMiner && gameData.firstCopperMiner == 1000) {
   document.getElementById("firstCopperMiner").removeAttribute("hidden")
+}
+
+if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost) {
+  document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
 }
 
 // Save the game every 15 seconds
