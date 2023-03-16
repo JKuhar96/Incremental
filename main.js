@@ -14,7 +14,7 @@ function mineCopper() {
     document.getElementById("copperPerClickUpgrade").removeAttribute("hidden")
     document.getElementById("copperPerClickUpgrade").removeAttribute("disabled")
   }
-  if (gameData.copperPerClickCost >= 10 && gameData.copper <= gameData.copperPerClickCost)
+  if (gameData.copperPerClickCost > 10 && gameData.copper <= gameData.copperPerClickCost)
   {
     document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
   }
@@ -31,7 +31,7 @@ function buyCopperPerClick() {
 }
 
 // Function for first automated miner
-function unlockFirstMiner() {
+function unlockFirstCopperMiner() {
   if (gameData.copper >= gameData.firstCopperMiner) {
     gameData.copper -= gameData.firstCopperMiner
     gameData.firstCopperMiner *= 2
