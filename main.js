@@ -10,6 +10,14 @@ var gameData = {
 function mineCopper() {
   gameData.copper += gameData.copperPerClick
   document.getElementById("copperMined").innerHTML = gameData.copper + " Copper Mined"
+  if (gameData.copper >= gameData.copperPerClickCost) {
+    document.getElementById("copperPerClickUpgrade").removeAttribute("hidden")
+    document.getElementById("copperPerClickUpgrade").removeAttribute("disabled")
+  }
+  if (gameData.copperPerClickCost >= 10 && gameData.copper <= gameData.copperPerClickCost)
+  {
+    document.getElementById("copperPerClickUpgrade").setAttribute("disabled")
+  }
 }
 
 // Function for button to upgrade click gain
@@ -26,13 +34,15 @@ function buyCopperPerClick() {
 function unlockFirstMiner() {
   if (gameData.copper >= gameData.firstCopperMiner) {
     gameData.copper -= gameData.firstCopperMiner
+    gameData.firstCopperMiner *= 2
     window.setInterval(function (){gameData.copper += 100}, 10000)
   }
 }
 //#endregion
 
-if (gameData.copper === 10) {
-  document.getElementById("copperPerClickUpgrade").removeAttribute("hidden")
+if (gameData.copper >= gameData.firstCopperMiner && gameData.firstCopperMiner == 1000)
+{
+  document.getElementById("firstCopperMiner").removeAttribute("hidden")
 }
 
 // Save the game every 15 seconds
