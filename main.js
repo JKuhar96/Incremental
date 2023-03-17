@@ -1,11 +1,12 @@
 var gameData = {
-  copper: 1,
+  copper: 0,
   copperPerClick: 1,
   copperPerClickCost: 10,
   firstCopperMiner: 100
 }
 
-//#region Functions for the first tab
+const updateSpeed = 20
+
 // Function for button click gain to get basic currency
 function mineCopper() {
   gameData.copper += gameData.copperPerClick
@@ -28,6 +29,7 @@ function buyCopperPerClick() {
     gameData.copperPerClick += 1
     gameData.copperPerClickCost *= 2
     document.getElementById("copperMined").innerHTML = gameData.copper + " Copper Mined"
+    document.getElementById("copperPerClickUpgrade").innerHTML = "Upgrade Pickaxe (Currently Level " + gameData.copperPerClick + ") " + "Cost: " + gameData.copperPerClickCost + " Copper"
     document.getElementById("copperPerClickUpgrade").setAttribute("disabled", true)
   }
 }
@@ -37,24 +39,53 @@ function unlockFirstCopperMiner() {
   if (gameData.copper >= gameData.firstCopperMiner) {
     gameData.copper -= gameData.firstCopperMiner
     gameData.firstCopperMiner *= 2
-    window.setInterval(function () { gameData.copper += 100 }, 10000)
+    update()
+    window.setInterval(function () {
+      gameData.copper += 10
+      saveGameData()
+      update()
+     }, 1000)
     document.getElementById("firstCopperMiner").setAttribute("disabled", true)
   }
 }
-//#endregion
 
-// Save the game every 15 seconds
-var saveGameLoop = window.setInterval(function () {
-  localStorage.setItem("currencyMinerSave", JSON.stringify(gameData))
-}, 15000)
-
-// Get save data from local storage and parse
-var savegame = JSON.parse(localStorage.getItem("currencyMinerSave"))
-if (savegame !== null) {
-  if (typeof savegame.copper !== "undefined") gameData.copper = savegame.copper;
-  if (typeof savegame.copperPerClick !== "undefined") gameData.copperPerClick = savegame.copperPerClick;
-  if (typeof savegame.copperPerClickCost !== "undefined") gameData.copperPerClickCost = savegame.copperPerClickCost;
-  if (typeof savegame.firstCopperMiner !== "undefined") gameData.firstCopperMiner = savegame.firstCopperMiner;
-
-  gameData = savegame
+function firstAutomatorValue() {
+  
 }
+
+function saveGameData() {
+  localStorage.setItem("currencyMinerSave", JSON.stringify(gameData))
+}
+
+function loadGameData() {
+  var saveGame = JSON.parse(localStorage.getItem("currencyMinerSave"))
+  if (saveGame !== null) {
+    if (typeof saveGame.copper !== "undefined")
+      gameData.copper = saveGame.copper;
+    if (typeof saveGame.copperPerClick !== "undefined")
+      gameData.copperPerClick = saveGame.copperPerClick;
+    if (typeof saveGame.copperPerClickCost !== "undefined")
+      gameData.copperPerClickCost = saveGame.copperPerClickCost;
+    if (typeof saveGame.firstCopperMiner !== "undefined")
+      gameData.firstCopperMiner = saveGame.firstCopperMiner;
+    
+    gameData = saveGame
+  }
+  document.getElementById("copperMined").innerHTML = gameData.copper + " Copper Mined"
+}
+
+function update(){
+  document.getElementById("copperMined").innerHTML = gameData.copper + " Copper Mined"
+}
+
+loadGameData()
+
+update()
+
+var gameloop = setInterval(function() {
+  if (ticking) return;
+  ticking = true;
+  update();
+  ticking = false;
+}, 1000 / updateSpeed)
+var saveloop = setInterval(saveGameData, 3000)
